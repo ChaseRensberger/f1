@@ -19,12 +19,12 @@ export function StandingsPage({ width }: StandingsPageProps) {
 			flexGrow={1}
 			minHeight={0}
 		>
-		<box flexGrow={1} height={stack ? "50%" : "100%"} minHeight={0} border borderStyle="single" borderColor="#33455F" padding={1}>
-			<text fg="#F5C94A">CONSTRUCTOR STANDINGS</text>
-			<box marginTop={1} marginBottom={1} paddingLeft={3}>
-				<text fg="#9DB4CA">{cell("POS", 5)}{cell("TEAM", constructorNameWidth)}{cell("PTS", 6)}</text>
-			</box>
-			<scrollbox scrollY flexGrow={1} minHeight={0}>
+			<box flexGrow={1} height={stack ? "50%" : "100%"} minHeight={0} border borderStyle="single" borderColor="#33455F">
+				<text fg="#F5C94A">CONSTRUCTOR STANDINGS</text>
+				<box marginTop={1} marginBottom={1} paddingLeft={3}>
+					<text fg="#9DB4CA">{cell("POS", 5)}{cell("TEAM", constructorNameWidth)}{cell("PTS", 6)}</text>
+				</box>
+				<scrollbox scrollY flexGrow={1} minHeight={0}>
 					{constructorStandings.map((constructor) => {
 						const colors = paletteForTeam(constructor.constructor);
 						return (
@@ -43,12 +43,12 @@ export function StandingsPage({ width }: StandingsPageProps) {
 				</scrollbox>
 			</box>
 
-		<box flexGrow={1} height={stack ? "50%" : "100%"} minHeight={0} border borderStyle="single" borderColor="#33455F" padding={1}>
-			<text fg="#F5C94A">DRIVER STANDINGS</text>
-			<box marginTop={1} marginBottom={1} paddingLeft={3}>
-				<text fg="#9DB4CA">{cell("POS", 5)}{cell("DRIVER", driverNameWidth)}{cell("TEAM", driverTeamWidth)}{cell("PTS", 6)}</text>
-			</box>
-			<scrollbox scrollY flexGrow={1} minHeight={0}>
+			<box flexGrow={1} height={stack ? "50%" : "100%"} minHeight={0} border borderStyle="single" borderColor="#33455F">
+				<text fg="#F5C94A">DRIVER STANDINGS</text>
+				<box marginTop={1} marginBottom={1} paddingLeft={3}>
+					<text fg="#9DB4CA">{cell("POS", 5)}{cell("DRIVER", driverNameWidth)}{cell("TEAM", driverTeamWidth)}{cell("PTS", 6)}</text>
+				</box>
+				<scrollbox scrollY flexGrow={1} minHeight={0}>
 					{driverStandings.map((driver) => {
 						const colors = paletteForTeam(driver.team);
 						return (

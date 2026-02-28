@@ -5,7 +5,7 @@ export const eventLabel = "Bahrain GP - Lap 39 / 57";
 
 export const sessionDrivers: SessionDriver[] = [
   { position: 1, code: "NOR", team: "McLaren", tire: "Hard", inPit: false, lastLapMs: 94412, gapsToLeaderMs: 0 },
-  { position: 2, code: "VER", team: "Red Bull Racing", tire: "Hard", inPit: false, lastLapMs: 94471, gapsToLeaderMs: 1568 },
+  { position: 2, code: "VER", team: "Red Bull", tire: "Hard", inPit: false, lastLapMs: 94471, gapsToLeaderMs: 1568 },
   { position: 3, code: "LEC", team: "Ferrari", tire: "Medium", inPit: false, lastLapMs: 94608, gapsToLeaderMs: 4232 },
   { position: 4, code: "PIA", team: "McLaren", tire: "Hard", inPit: false, lastLapMs: 94590, gapsToLeaderMs: 6124 },
   { position: 5, code: "HAM", team: "Ferrari", tire: "Hard", inPit: false, lastLapMs: 94703, gapsToLeaderMs: 9327 },
@@ -21,11 +21,11 @@ export const sessionDrivers: SessionDriver[] = [
   { position: 15, code: "BOR", team: "Audi", tire: "Medium", inPit: false, lastLapMs: 95520, gapsToLeaderMs: 48762 },
   { position: 16, code: "LAW", team: "Racing Bulls", tire: "Hard", inPit: false, lastLapMs: 95581, gapsToLeaderMs: 52215 },
   { position: 17, code: "LIN", team: "Racing Bulls", tire: "Hard", inPit: false, lastLapMs: 95624, gapsToLeaderMs: 56103 },
-  { position: 18, code: "OCO", team: "Haas F1 Team", tire: "Medium", inPit: false, lastLapMs: 95720, gapsToLeaderMs: 60722 },
-  { position: 19, code: "BEA", team: "Haas F1 Team", tire: "Hard", inPit: false, lastLapMs: 95811, gapsToLeaderMs: 64610 },
+  { position: 18, code: "OCO", team: "Haas", tire: "Medium", inPit: false, lastLapMs: 95720, gapsToLeaderMs: 60722 },
+  { position: 19, code: "BEA", team: "Haas", tire: "Hard", inPit: false, lastLapMs: 95811, gapsToLeaderMs: 64610 },
   { position: 20, code: "PER", team: "Cadillac", tire: "Medium", inPit: false, lastLapMs: 95942, gapsToLeaderMs: 69403 },
   { position: 21, code: "BOT", team: "Cadillac", tire: "Hard", inPit: false, lastLapMs: 96018, gapsToLeaderMs: 73112 },
-  { position: 22, code: "HAD", team: "Red Bull Racing", tire: "Soft", inPit: false, lastLapMs: 96240, gapsToLeaderMs: 78201 },
+  { position: 22, code: "HAD", team: "Red Bull", tire: "Soft", inPit: false, lastLapMs: 96240, gapsToLeaderMs: 78201 },
 ];
 
 export const raceWeekends: Weekend[] = [
@@ -109,13 +109,13 @@ export const raceWeekends: Weekend[] = [
 export const constructorStandings: ConstructorStanding[] = [
   { position: 1, constructor: "McLaren", points: 168, wins: 2 },
   { position: 2, constructor: "Ferrari", points: 152, wins: 1 },
-  { position: 3, constructor: "Red Bull Racing", points: 138, wins: 1 },
+  { position: 3, constructor: "Red Bull", points: 138, wins: 1 },
   { position: 4, constructor: "Mercedes", points: 120, wins: 0 },
   { position: 5, constructor: "Williams", points: 62, wins: 0 },
   { position: 6, constructor: "Aston Martin", points: 48, wins: 0 },
   { position: 7, constructor: "Alpine", points: 34, wins: 0 },
   { position: 8, constructor: "Racing Bulls", points: 27, wins: 0 },
-  { position: 9, constructor: "Haas F1 Team", points: 19, wins: 0 },
+  { position: 9, constructor: "Haas", points: 19, wins: 0 },
   { position: 10, constructor: "Audi", points: 16, wins: 0 },
   { position: 11, constructor: "Cadillac", points: 9, wins: 0 },
 ];
@@ -123,7 +123,7 @@ export const constructorStandings: ConstructorStanding[] = [
 export const driverStandings: DriverStanding[] = [
   { position: 1, driver: "Lando Norris", team: "McLaren", points: 92, wins: 1 },
   { position: 2, driver: "Charles Leclerc", team: "Ferrari", points: 84, wins: 1 },
-  { position: 3, driver: "Max Verstappen", team: "Red Bull Racing", points: 81, wins: 1 },
+  { position: 3, driver: "Max Verstappen", team: "Red Bull", points: 81, wins: 1 },
   { position: 4, driver: "Oscar Piastri", team: "McLaren", points: 76, wins: 1 },
   { position: 5, driver: "Lewis Hamilton", team: "Ferrari", points: 68, wins: 0 },
   { position: 6, driver: "George Russell", team: "Mercedes", points: 64, wins: 0 },
@@ -136,11 +136,11 @@ export const driverStandings: DriverStanding[] = [
   { position: 13, driver: "Franco Colapinto", team: "Alpine", points: 14, wins: 0 },
   { position: 14, driver: "Liam Lawson", team: "Racing Bulls", points: 14, wins: 0 },
   { position: 15, driver: "Arvid Lindblad", team: "Racing Bulls", points: 13, wins: 0 },
-  { position: 16, driver: "Esteban Ocon", team: "Haas F1 Team", points: 11, wins: 0 },
-  { position: 17, driver: "Oliver Bearman", team: "Haas F1 Team", points: 8, wins: 0 },
+  { position: 16, driver: "Esteban Ocon", team: "Haas", points: 11, wins: 0 },
+  { position: 17, driver: "Oliver Bearman", team: "Haas", points: 8, wins: 0 },
   { position: 18, driver: "Nico Hulkenberg", team: "Audi", points: 8, wins: 0 },
   { position: 19, driver: "Gabriel Bortoleto", team: "Audi", points: 8, wins: 0 },
   { position: 20, driver: "Sergio Perez", team: "Cadillac", points: 5, wins: 0 },
   { position: 21, driver: "Valtteri Bottas", team: "Cadillac", points: 4, wins: 0 },
-  { position: 22, driver: "Isack Hadjar", team: "Red Bull Racing", points: 3, wins: 0 },
+  { position: 22, driver: "Isack Hadjar", team: "Red Bull", points: 3, wins: 0 },
 ];

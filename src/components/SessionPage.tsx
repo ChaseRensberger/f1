@@ -17,7 +17,7 @@ export function SessionPage({ width }: SessionPageProps) {
 				<text fg="#A4BCD3">{eventLabel}</text>
 			</box>
 
-			<box border borderStyle="single" borderColor="#33455F" height={3}>
+			<box border borderStyle="single" borderColor="#33455F" height={3} paddingLeft={2}>
 				<text fg="#9DB4CA">
 					{cell("POS", 5)}
 					{cell("DRV", 6)}
