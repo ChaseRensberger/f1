@@ -21,7 +21,20 @@ export async function fetchAPI<T>(
 		}
 	}
 
-	const response = await fetch(url.toString());
+	let response: Response | null = null;
+
+	for (let attempt = 0; attempt < 3; attempt += 1) {
+		response = await fetch(url.toString());
+		if (response.status !== 429) break;
+		if (attempt < 2) {
+			const waitMs = 400 * (attempt + 1);
+			await new Promise((resolve) => setTimeout(resolve, waitMs));
+		}
+	}
+
+	if (!response) {
+		throw new ApiError(500, "No response from API");
+	}
 
 	if (!response.ok) {
 		throw new ApiError(

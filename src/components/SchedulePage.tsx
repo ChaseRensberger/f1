@@ -1,4 +1,4 @@
-import { raceWeekends } from "../data/mockData";
+import { useScheduleWeekends } from "../hooks/useSchedule";
 import { cell, formatWeekendRange } from "../utils/format";
 
 type SchedulePageProps = {
@@ -6,7 +6,8 @@ type SchedulePageProps = {
 };
 
 export function SchedulePage({ width }: SchedulePageProps) {
-	const now = new Date("2026-03-08T15:00:00Z");
+	const now = new Date();
+	const weekends = useScheduleWeekends();
 
 	const gpWidth = Math.max(16, Math.min(28, width - 60));
 
@@ -27,7 +28,17 @@ export function SchedulePage({ width }: SchedulePageProps) {
 			</box>
 
 			<scrollbox scrollY flexGrow={1} minHeight={0}>
-				{raceWeekends.map((weekend) => {
+				{weekends.loading && (
+					<box paddingLeft={3} marginTop={1}>
+						<text fg="#7C8EA3">Loading schedule...</text>
+					</box>
+				)}
+				{weekends.error && (
+					<box paddingLeft={3} marginTop={1}>
+						<text fg="#DC0000">Failed to load: {weekends.error}</text>
+					</box>
+				)}
+				{weekends.data?.map((weekend) => {
 					const start = new Date(weekend.startDate);
 					const end = new Date(weekend.endDate);
 					const current = now >= start && now <= end;

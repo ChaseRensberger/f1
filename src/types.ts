@@ -47,6 +47,16 @@ export type OpenF1Session = {
   year: number;
 };
 
+export type OpenF1Meeting = {
+  meeting_key: number;
+  meeting_name: string;
+  country_code: string;
+  circuit_short_name: string;
+  date_start: string;
+  date_end: string;
+  year: number;
+};
+
 export type OpenF1ChampionshipDriver = {
   driver_number: number;
   meeting_key: number;

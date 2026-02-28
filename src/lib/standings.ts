@@ -8,14 +8,26 @@ import type {
 	OpenF1Session,
 } from "../types";
 
+// Module-level caches -- persist for the lifetime of the process
+let sessionKeyPromise: Promise<number> | null = null;
+let driverCache: DriverStanding[] | null = null;
+let constructorCache: ConstructorStanding[] | null = null;
+
 /**
  * Finds the session_key of the most recent race that has completed.
  * Championship data is only available for race sessions.
  *
- * Strategy: check current year first, fall back to previous year.
- * Uses the last race session in the list (sorted chronologically by the API).
+ * Deduped: concurrent calls share a single in-flight request.
+ * Cached: subsequent calls return the resolved value immediately.
  */
-async function findLatestRaceSessionKey(): Promise<number> {
+function findLatestRaceSessionKey(): Promise<number> {
+	if (!sessionKeyPromise) {
+		sessionKeyPromise = _findLatestRaceSessionKey();
+	}
+	return sessionKeyPromise;
+}
+
+async function _findLatestRaceSessionKey(): Promise<number> {
 	const currentYear = new Date().getFullYear();
 
 	// Try current year first
@@ -84,6 +96,8 @@ function normalizeTeamName(apiName: string): string {
 }
 
 export async function fetchDriverStandings(): Promise<DriverStanding[]> {
+	if (driverCache) return driverCache;
+
 	const sessionKey = await findLatestRaceSessionKey();
 	const sessionKeyStr = String(sessionKey);
 
@@ -108,7 +122,7 @@ export async function fetchDriverStandings(): Promise<DriverStanding[]> {
 	}
 
 	// Merge and sort by position
-	return championship
+	const result = championship
 		.map((entry) => {
 			const driver = driverMap.get(entry.driver_number);
 			return {
@@ -123,11 +137,16 @@ export async function fetchDriverStandings(): Promise<DriverStanding[]> {
 			};
 		})
 		.sort((a, b) => a.position - b.position);
+
+	driverCache = result;
+	return result;
 }
 
 export async function fetchConstructorStandings(): Promise<
 	ConstructorStanding[]
 > {
+	if (constructorCache) return constructorCache;
+
 	const sessionKey = await findLatestRaceSessionKey();
 
 	const championship = await fetchAPI<OpenF1ChampionshipTeam[]>(
@@ -139,11 +158,14 @@ export async function fetchConstructorStandings(): Promise<
 		throw new Error("No championship data available for this session");
 	}
 
-	return championship
+	const result = championship
 		.map((entry) => ({
 			position: entry.position_current,
 			constructor: normalizeTeamName(entry.team_name),
 			points: entry.points_current,
 		}))
 		.sort((a, b) => a.position - b.position);
+
+	constructorCache = result;
+	return result;
 }
