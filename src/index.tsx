@@ -7,7 +7,7 @@ import { SessionPage } from "./components/SessionPage";
 import { StandingsPage } from "./components/StandingsPage";
 import type { TabName } from "./types";
 
-const tabs: TabName[] = ["Session", "Schedule", "Standings"];
+const tabs: TabName[] = ["Schedule", "Session", "Standings"];
 
 function App() {
 	const renderer = useRenderer();
@@ -35,6 +35,14 @@ function App() {
 			setTabIndex((idx) => (idx + 1) % tabs.length);
 			return;
 		}
+		if (key.name === "tab" && !key.shift) {
+			setTabIndex((idx) => (idx + 1) % tabs.length);
+			return;
+		}
+		if (key.name === "tab" && key.shift) {
+			setTabIndex((idx) => (idx - 1 + tabs.length) % tabs.length);
+			return;
+		}
 		if (key.name === "left" || key.name === "h") {
 			setTabIndex((idx) => (idx - 1 + tabs.length) % tabs.length);
 		}
@@ -56,7 +64,7 @@ function App() {
 	return (
 		<box flexDirection="column" flexGrow={1} gap={1} backgroundColor="#070C13">
 			<Header activeTab={activeTab} />
-			{/*<box flexGrow={1}>{page}</box>*/}
+			<box flexGrow={1}>{page}</box>
 		</box>
 	);
 }

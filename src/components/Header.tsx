@@ -8,7 +8,7 @@ type HeaderProps = {
 
 export function Header({ activeTab }: HeaderProps) {
 	return (
-		<box flexDirection="row" gap={1} border borderStyle="single" borderColor="#33455F">
+		<box minHeight={5} flexDirection="row" gap={1} border borderStyle="single" borderColor="#33455F">
 			{tabs.map((tab) => {
 				const active = activeTab === tab;
 				return (
