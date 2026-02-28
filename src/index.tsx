@@ -12,7 +12,7 @@ const tabs: TabName[] = ["Schedule", "Session", "Standings"];
 function App() {
 	const renderer = useRenderer();
 	const { width } = useTerminalDimensions();
-	const [tabIndex, setTabIndex] = useState(0);
+	const [tabIndex, setTabIndex] = useState(1);
 
 	useKeyboard((key) => {
 		if (key.name === "q" || key.name === "escape" || (key.ctrl && key.name === "c")) {
@@ -64,7 +64,7 @@ function App() {
 	return (
 		<box flexDirection="column" flexGrow={1} gap={1} backgroundColor="#070C13">
 			<Header activeTab={activeTab} />
-			<scrollbox flexGrow={1} scrollY focused>{page}</scrollbox>
+			<box flexGrow={1}>{page}</box>
 		</box>
 	);
 }
