@@ -10,9 +10,6 @@ export function SessionPage({ width }: SessionPageProps) {
 	const fastestLapMs = Math.min(...sessionDrivers.map((d) => d.lastLapMs));
 	const compact = width < 106;
 
-	const teamWidth = compact ? 10 : 14;
-	const lapWidth = compact ? 10 : 13;
-
 	return (
 		<box flexDirection="column" border borderStyle="single" borderColor="#425B7A" flexGrow={1}>
 			<box justifyContent="space-between" height={2}>
@@ -24,10 +21,10 @@ export function SessionPage({ width }: SessionPageProps) {
 				<text fg="#9DB4CA">
 					{cell("POS", 5)}
 					{cell("DRV", 6)}
-					{cell("TEAM", teamWidth)}
+					{cell("TEAM", 14)}
 					{cell("TYRE", 8)}
 					{cell("STATUS", 9)}
-					{cell("LAST", lapWidth)}
+					{cell("LAST", 13)}
 					GAP
 				</text>
 			</box>
@@ -43,10 +40,10 @@ export function SessionPage({ width }: SessionPageProps) {
 								<text fg={colors.fg}>
 									{cell(`#${driver.position}`, 5)}
 									{cell(driver.code, 6)}
-									{cell(driver.team, teamWidth)}
+									{cell(driver.team, 14)}
 									{cell(driver.tire.toUpperCase(), 8)}
 									<span fg={driver.inPit ? "#FF6B6B" : "#7EE5A7"}>{cell(driver.inPit ? "IN PIT" : "TRACK", 9)}</span>
-									<span fg={fastest ? "#D946EF" : colors.fg}>{cell(msToLap(driver.lastLapMs), lapWidth)}</span>
+									<span fg={fastest ? "#D946EF" : colors.fg}>{cell(msToLap(driver.lastLapMs), 13)}</span>
 									{msToGap(driver.gapsToLeaderMs)}
 								</text>
 							</box>
