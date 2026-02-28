@@ -24,7 +24,7 @@ export function StandingsPage({ width }: StandingsPageProps) {
       minHeight={0}
       gap={1}
     >
-      <box flexGrow={1} minHeight={0} border borderStyle="single" borderColor="#33455F" padding={1}>
+      <box flexGrow={1} height={stack ? "50%" : undefined} minHeight={0} border borderStyle="single" borderColor="#33455F" padding={1}>
         <text fg="#F5C94A">CONSTRUCTOR STANDINGS</text>
         <box marginTop={1} marginBottom={1}>
           <text fg="#9DB4CA">{cell("POS", 5)}{cell("TEAM", constructorNameWidth)}{cell("PTS", 6)}</text>
@@ -48,7 +48,7 @@ export function StandingsPage({ width }: StandingsPageProps) {
         </scrollbox>
       </box>
 
-      <box flexGrow={1} minHeight={0} border borderStyle="single" borderColor="#33455F" padding={1}>
+      <box flexGrow={1} height={stack ? "50%" : undefined} minHeight={0} border borderStyle="single" borderColor="#33455F" padding={1}>
         <text fg="#F5C94A">DRIVER STANDINGS</text>
         <box marginTop={1} marginBottom={1}>
           <text fg="#9DB4CA">{cell("POS", 5)}{cell("DRIVER", driverNameWidth)}{cell("TEAM", driverTeamWidth)}{cell("PTS", 6)}</text>
