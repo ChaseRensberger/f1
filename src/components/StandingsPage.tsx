@@ -1,4 +1,7 @@
-import { constructorStandings, driverStandings } from "../data/mockData";
+import {
+	useConstructorStandings,
+	useDriverStandings,
+} from "../hooks/useStandings";
 import { cell } from "../utils/format";
 import { paletteForTeam } from "./theme";
 
@@ -11,7 +14,13 @@ export function StandingsPage({ width }: StandingsPageProps) {
 	const paneWidth = stack ? width - 10 : Math.floor((width - 14) / 2);
 	const constructorNameWidth = Math.max(10, Math.min(18, paneWidth - 20));
 	const driverNameWidth = Math.max(12, Math.min(20, paneWidth - 20));
-	const driverTeamWidth = Math.max(10, Math.min(18, paneWidth - driverNameWidth - 18));
+	const driverTeamWidth = Math.max(
+		10,
+		Math.min(18, paneWidth - driverNameWidth - 18),
+	);
+
+	const constructors = useConstructorStandings();
+	const drivers = useDriverStandings();
 
 	return (
 		<box
@@ -21,11 +30,21 @@ export function StandingsPage({ width }: StandingsPageProps) {
 		>
 			<box flexGrow={1} height={stack ? "50%" : "100%"} minHeight={0} border borderStyle="single" borderColor="#33455F">
 				<text fg="#F5C94A">CONSTRUCTOR STANDINGS</text>
-				<box marginTop={1} paddingLeft={3}>
+				<box marginY={1} paddingLeft={3}>
 					<text fg="#9DB4CA">{cell("POS", 5)}{cell("TEAM", constructorNameWidth)}{cell("PTS", 6)}</text>
 				</box>
 				<scrollbox scrollY flexGrow={1} minHeight={0}>
-					{constructorStandings.map((constructor) => {
+					{constructors.loading && (
+						<box paddingLeft={3} marginTop={1}>
+							<text fg="#7C8EA3">Loading standings...</text>
+						</box>
+					)}
+					{constructors.error && (
+						<box paddingLeft={3} marginTop={1}>
+							<text fg="#DC0000">Failed to load: {constructors.error}</text>
+						</box>
+					)}
+					{constructors.data?.map((constructor) => {
 						const colors = paletteForTeam(constructor.constructor);
 						return (
 							<box key={constructor.constructor} flexDirection="row" border borderStyle="single" borderColor={colors.stripe}>
@@ -45,11 +64,21 @@ export function StandingsPage({ width }: StandingsPageProps) {
 
 			<box flexGrow={1} height={stack ? "50%" : "100%"} minHeight={0} border borderStyle="single" borderColor="#33455F">
 				<text fg="#F5C94A">DRIVER STANDINGS</text>
-				<box marginTop={1} marginBottom={1} paddingLeft={3}>
+				<box marginY={1} paddingLeft={3}>
 					<text fg="#9DB4CA">{cell("POS", 5)}{cell("DRIVER", driverNameWidth)}{cell("TEAM", driverTeamWidth)}{cell("PTS", 6)}</text>
 				</box>
 				<scrollbox scrollY flexGrow={1} minHeight={0}>
-					{driverStandings.map((driver) => {
+					{drivers.loading && (
+						<box paddingLeft={3} marginTop={1}>
+							<text fg="#7C8EA3">Loading standings...</text>
+						</box>
+					)}
+					{drivers.error && (
+						<box paddingLeft={3} marginTop={1}>
+							<text fg="#DC0000">Failed to load: {drivers.error}</text>
+						</box>
+					)}
+					{drivers.data?.map((driver) => {
 						const colors = paletteForTeam(driver.team);
 						return (
 							<box key={driver.driver} flexDirection="row" border borderStyle="single" borderColor={colors.stripe}>
