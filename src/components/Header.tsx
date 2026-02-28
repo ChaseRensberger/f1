@@ -22,7 +22,7 @@ export function Header({ activeTab }: HeaderProps) {
 						paddingLeft={1}
 						paddingRight={1}
 					>
-						<text fg={active ? "#F5C94A" : "#B9CADB"}>{tab}</text>
+						<text marginX="auto" fg={active ? "#F5C94A" : "#B9CADB"}>{tab}</text>
 					</box>
 				);
 			})}
