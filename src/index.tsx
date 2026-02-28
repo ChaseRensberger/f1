@@ -62,7 +62,7 @@ function App() {
 	}, [activeTab, width]);
 
 	return (
-		<box flexDirection="column" flexGrow={1} gap={1} backgroundColor="#070C13">
+		<box flexDirection="column" flexGrow={1} backgroundColor="#070C13">
 			<Header activeTab={activeTab} />
 			<box flexGrow={1}>{page}</box>
 		</box>

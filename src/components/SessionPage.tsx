@@ -14,13 +14,13 @@ export function SessionPage({ width }: SessionPageProps) {
 	const lapWidth = compact ? 10 : 13;
 
 	return (
-		<box flexDirection="column" border borderStyle="double" borderColor="#425B7A" flexGrow={1}>
-			<box justifyContent="space-between" marginBottom={1}>
+		<box flexDirection="column" border borderStyle="single" borderColor="#425B7A" flexGrow={1}>
+			<box justifyContent="space-between">
 				<text fg="#F5C94A">LIVE SESSION - {sessionName.toUpperCase()}</text>
 				<text fg="#A4BCD3">{eventLabel}</text>
 			</box>
 
-			<box border borderStyle="single" borderColor="#33455F" padding={1} marginBottom={1}>
+			<box border borderStyle="single" borderColor="#33455F">
 				<text fg="#9DB4CA">
 					{cell("POS", 5)}
 					{cell("DRV", 6)}
@@ -32,7 +32,7 @@ export function SessionPage({ width }: SessionPageProps) {
 				</text>
 			</box>
 
-			<box flexDirection="column" flexGrow={1}>
+			<scrollbox scrollY flexDirection="column" flexGrow={1}>
 				{sessionDrivers.map((driver) => {
 					const colors = paletteForTeam(driver.team);
 					const fastest = driver.lastLapMs === fastestLapMs;
@@ -53,7 +53,7 @@ export function SessionPage({ width }: SessionPageProps) {
 						</box>
 					);
 				})}
-			</box>
+			</scrollbox>
 		</box>
 	);
 }
