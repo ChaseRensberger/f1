@@ -32,7 +32,7 @@ export function SessionPage({ width }: SessionPageProps) {
 				</text>
 			</box>
 
-			<scrollbox scrollY flexDirection="column" flexGrow={1}>
+			<scrollbox scrollY flexGrow={1}>
 				{sessionDrivers.map((driver) => {
 					const colors = paletteForTeam(driver.team);
 					const fastest = driver.lastLapMs === fastestLapMs;
