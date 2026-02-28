@@ -15,12 +15,12 @@ export function SessionPage({ width }: SessionPageProps) {
 
 	return (
 		<box flexDirection="column" border borderStyle="single" borderColor="#425B7A" flexGrow={1}>
-			<box justifyContent="space-between">
+			<box justifyContent="space-between" height={2}>
 				<text fg="#F5C94A">LIVE SESSION - {sessionName.toUpperCase()}</text>
 				<text fg="#A4BCD3">{eventLabel}</text>
 			</box>
 
-			<box border borderStyle="single" borderColor="#33455F">
+			<box border borderStyle="single" borderColor="#33455F" height={3}>
 				<text fg="#9DB4CA">
 					{cell("POS", 5)}
 					{cell("DRV", 6)}
