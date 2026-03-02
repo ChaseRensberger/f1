@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.openf1.org/v1";
+const BASE_URL = process.env.API_URL || "http://localhost:3000/v1";
 
 export class ApiError extends Error {
 	constructor(
