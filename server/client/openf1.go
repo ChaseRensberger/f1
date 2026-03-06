@@ -10,14 +10,23 @@ import (
 
 const baseURL = "https://api.openf1.org/v1"
 
+type TokenSource interface {
+	GetToken() string
+}
+
 type Client struct {
-	http *http.Client
+	http        *http.Client
+	tokenSource TokenSource
 }
 
 func New() *Client {
 	return &Client{
 		http: &http.Client{Timeout: 15 * time.Second},
 	}
+}
+
+func (c *Client) SetTokenSource(ts TokenSource) {
+	c.tokenSource = ts
 }
 
 func (c *Client) Fetch(endpoint string, query url.Values) ([]byte, int, error) {
@@ -30,7 +39,18 @@ func (c *Client) Fetch(endpoint string, query url.Values) ([]byte, int, error) {
 	var err error
 
 	for attempt := range 3 {
-		resp, err = c.http.Get(u)
+		req, reqErr := http.NewRequest("GET", u, nil)
+		if reqErr != nil {
+			return nil, 0, fmt.Errorf("creating request: %w", reqErr)
+		}
+
+		if c.tokenSource != nil {
+			if token := c.tokenSource.GetToken(); token != "" {
+				req.Header.Set("Authorization", "Bearer "+token)
+			}
+		}
+
+		resp, err = c.http.Do(req)
 		if err != nil {
 			return nil, 0, fmt.Errorf("request failed: %w", err)
 		}

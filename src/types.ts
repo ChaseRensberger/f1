@@ -31,9 +31,35 @@ export type ConstructorStanding = {
   points: number;
 };
 
-export type TabName = "Session" | "Schedule" | "Standings";
+export type SessionData = {
+  sessionName: string;
+  sessionType: string;
+  eventName: string;
+  countryName: string;
+  active: boolean;
+  drivers: SessionDriver[];
+};
 
-// OpenF1 API response types
+export type RawSessionSnapshot = {
+  session_name: string;
+  session_type: string;
+  event_name: string;
+  country_name: string;
+  active: boolean;
+  drivers: RawDriverSnapshot[];
+};
+
+export type RawDriverSnapshot = {
+  position: number;
+  code: string;
+  team: string;
+  tire: string;
+  in_pit: boolean;
+  last_lap_ms: number;
+  gap_to_leader_ms: number;
+};
+
+export type TabName = "Session" | "Schedule" | "Standings";
 
 export type OpenF1Session = {
   session_key: number;

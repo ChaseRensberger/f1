@@ -1,4 +1,4 @@
-import { eventLabel, sessionDrivers, sessionName } from "../data/mockData";
+import { useSession } from "../hooks/useSession";
 import { cell, msToGap, msToLap } from "../utils/format";
 import { paletteForTeam } from "./theme";
 
@@ -7,7 +7,42 @@ type SessionPageProps = {
 };
 
 export function SessionPage({ width }: SessionPageProps) {
-	const fastestLapMs = Math.min(...sessionDrivers.map((d) => d.lastLapMs));
+	const { data, loading, error } = useSession();
+
+	if (loading) {
+		return (
+			<box flexDirection="column" border borderStyle="single" borderColor="#425B7A" flexGrow={1} justifyContent="center" alignItems="center">
+				<text fg="#A4BCD3">Connecting to live session...</text>
+			</box>
+		);
+	}
+
+	if (error && !data) {
+		return (
+			<box flexDirection="column" border borderStyle="single" borderColor="#425B7A" flexGrow={1} justifyContent="center" alignItems="center">
+				<text fg="#FF6B6B">Error: {error}</text>
+				<text fg="#A4BCD3">Retrying...</text>
+			</box>
+		);
+	}
+
+	if (!data || !data.active || data.drivers.length === 0) {
+		return (
+			<box flexDirection="column" border borderStyle="single" borderColor="#425B7A" flexGrow={1} justifyContent="center" alignItems="center">
+				<text fg="#A4BCD3">No active session</text>
+			</box>
+		);
+	}
+
+	const sessionDrivers = data.drivers;
+	const sessionName = data.sessionName;
+	const eventLabel = data.eventName
+		? `${data.eventName}${data.countryName ? " - " + data.countryName : ""}`
+		: "";
+
+	const fastestLapMs = Math.min(
+		...sessionDrivers.filter((d) => d.lastLapMs > 0).map((d) => d.lastLapMs),
+	);
 	const compact = width < 106;
 
 	return (
@@ -32,7 +67,7 @@ export function SessionPage({ width }: SessionPageProps) {
 			<scrollbox scrollY flexGrow={1}>
 				{sessionDrivers.map((driver) => {
 					const colors = paletteForTeam(driver.team);
-					const fastest = driver.lastLapMs === fastestLapMs;
+					const fastest = driver.lastLapMs > 0 && driver.lastLapMs === fastestLapMs;
 					return (
 						<box key={driver.code} flexDirection="row" border borderStyle="single" borderColor={colors.stripe}>
 							<box width={1} backgroundColor={colors.stripe} />
@@ -51,6 +86,12 @@ export function SessionPage({ width }: SessionPageProps) {
 					);
 				})}
 			</scrollbox>
+
+			{error && (
+				<box height={1} justifyContent="center">
+					<text fg="#FF6B6B">Connection issue: {error} (showing stale data)</text>
+				</box>
+			)}
 		</box>
 	);
 }

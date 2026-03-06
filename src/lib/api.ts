@@ -45,7 +45,6 @@ export async function fetchAPI<T>(
 
 	const data = await response.json();
 
-	// OpenF1 returns { detail: "No results found." } when there's no data
 	if (data && typeof data === "object" && "detail" in data) {
 		return [] as T;
 	}

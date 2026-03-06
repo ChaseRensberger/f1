@@ -8,18 +8,10 @@ import type {
 	OpenF1Session,
 } from "../types";
 
-// Module-level caches -- persist for the lifetime of the process
 let sessionKeyPromise: Promise<number> | null = null;
 let driverCache: DriverStanding[] | null = null;
 let constructorCache: ConstructorStanding[] | null = null;
 
-/**
- * Finds the session_key of the most recent race that has completed.
- * Championship data is only available for race sessions.
- *
- * Deduped: concurrent calls share a single in-flight request.
- * Cached: subsequent calls return the resolved value immediately.
- */
 function findLatestRaceSessionKey(): Promise<number> {
 	if (!sessionKeyPromise) {
 		sessionKeyPromise = _findLatestRaceSessionKey();
@@ -30,17 +22,14 @@ function findLatestRaceSessionKey(): Promise<number> {
 async function _findLatestRaceSessionKey(): Promise<number> {
 	const currentYear = new Date().getFullYear();
 
-	// Try current year first
 	let sessions = await fetchAPI<OpenF1Session[]>("sessions", {
 		session_name: "Race",
 		year: String(currentYear),
 	});
 
-	// Filter to sessions that have already ended
 	const now = new Date();
 	let pastSessions = sessions.filter((s) => new Date(s.date_end) < now);
 
-	// If no past races this year, try previous year
 	if (pastSessions.length === 0) {
 		sessions = await fetchAPI<OpenF1Session[]>("sessions", {
 			session_name: "Race",
@@ -53,12 +42,10 @@ async function _findLatestRaceSessionKey(): Promise<number> {
 		throw new Error("No completed race sessions found");
 	}
 
-	// Return the most recent one (API returns them chronologically)
 	const latest = pastSessions[pastSessions.length - 1]!;
 	return latest.session_key;
 }
 
-/** Format "Max VERSTAPPEN" -> "Max Verstappen" */
 function formatDriverName(fullName: string): string {
 	return fullName
 		.split(" ")
@@ -71,10 +58,6 @@ function formatDriverName(fullName: string): string {
 		.join(" ");
 }
 
-/**
- * Normalizes API team names to the short names used in the app theme.
- * The API returns e.g. "Red Bull Racing", but theme uses "Red Bull".
- */
 const teamNameMap: Record<string, string> = {
 	"Red Bull Racing": "Red Bull",
 	"Racing Bulls": "Racing Bulls",
@@ -101,7 +84,6 @@ export async function fetchDriverStandings(): Promise<DriverStanding[]> {
 	const sessionKey = await findLatestRaceSessionKey();
 	const sessionKeyStr = String(sessionKey);
 
-	// Fetch championship data and driver info in parallel
 	const [championship, drivers] = await Promise.all([
 		fetchAPI<OpenF1ChampionshipDriver[]>("championship_drivers", {
 			session_key: sessionKeyStr,
@@ -115,13 +97,11 @@ export async function fetchDriverStandings(): Promise<DriverStanding[]> {
 		throw new Error("No championship data available for this session");
 	}
 
-	// Build a lookup map from driver_number -> driver info
 	const driverMap = new Map<number, OpenF1Driver>();
 	for (const d of drivers) {
 		driverMap.set(d.driver_number, d);
 	}
 
-	// Merge and sort by position
 	const result = championship
 		.map((entry) => {
 			const driver = driverMap.get(entry.driver_number);

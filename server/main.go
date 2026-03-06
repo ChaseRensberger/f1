@@ -9,15 +9,20 @@ import (
 	"syscall"
 	"time"
 
+	"f1-server/auth"
 	"f1-server/cache"
 	"f1-server/client"
 	"f1-server/handler"
+	"f1-server/realtime"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	_ = godotenv.Load("../.env.local")
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
@@ -40,6 +45,36 @@ func main() {
 	}
 	for _, ep := range endpoints {
 		r.Get("/v1/"+ep, proxy.Handle(ep))
+	}
+
+	username := os.Getenv("OPENF1_USERNAME")
+	password := os.Getenv("OPENF1_PASSWORD")
+
+	if username != "" && password != "" && username != "your_username_here" {
+		tm, err := auth.NewTokenManager(username, password)
+		if err != nil {
+			log.Printf("auth: failed to obtain token: %v (realtime features disabled)", err)
+		} else {
+			defer tm.Stop()
+
+			c.SetTokenSource(tm)
+
+			var broker *handler.SSEBroker
+			rt := realtime.NewClient(tm, func(snapshot realtime.SessionSnapshot) {
+				if broker != nil {
+					broker.Broadcast(snapshot)
+				}
+			})
+			broker = handler.NewSSEBroker(rt)
+
+			rt.Start()
+			defer rt.Stop()
+
+			r.Get("/v1/session/live", broker.Handle())
+			log.Println("realtime: SSE endpoint available at /v1/session/live")
+		}
+	} else {
+		log.Println("realtime: OPENF1_USERNAME/OPENF1_PASSWORD not set, realtime features disabled")
 	}
 
 	srv := &http.Server{
